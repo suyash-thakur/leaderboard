@@ -16,12 +16,16 @@ var db = admin.database();
 
 app.get('/', function (req, res) {
     res.sendFile(__dirname + '/form.html');
-  
 })
+
+app.get('/count', function (req, res) {
+    res.sendFile(__dirname + '/count.html');
+})
+
  app.post('/savewinner', (req, res) => {
      console.log(req.body);
      res.sendFile(__dirname + '/form.html');
-
+    
     db.ref('student').once("value", function(snapshot) {
         if (snapshot.child(req.body.sap).exists()) {
             console.log(snapshot.val());
@@ -42,4 +46,16 @@ app.get('/', function (req, res) {
     })
      res.send('save');
  });
+ 
+app.post('/showscores', (req, res) => {
+    console.log(req.body);
+    var count = 10;
+    if(Number(req.body.count) > 0)
+        count = Number(req.body.count); 
+    var ref = db.ref('student');
+    ref.orderByChild("points").limitToLast(count).once("value").then(function(snapshot){
+        var jsonData = snapshot.toJSON();
+        res.send(jsonData);
+    });
+});
 app.listen(3000)
