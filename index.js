@@ -59,9 +59,10 @@ app.post('/showscores', (req, res) => {
         // console.log(snapshot.val());
         // res.send(jsonData);
         snapshot.forEach(function(childSnapshot){
-           console.log(childSnapshot.val());
-           leader.push(childSnapshot.val());
+           
+           leader = [...leader, {"sap": childSnapshot.key, "val": childSnapshot.val() }];
         });
+        console.log(leader);
         res.send(leader);
     });
 });
