@@ -48,14 +48,21 @@ app.get('/count', function (req, res) {
  });
  
 app.post('/showscores', (req, res) => {
+    var leader = [];
     console.log(req.body);
     var count = 10;
     if(Number(req.body.count) > 0)
         count = Number(req.body.count); 
     var ref = db.ref('student');
     ref.orderByChild("points").limitToLast(count).once("value").then(function(snapshot){
-        var jsonData = snapshot.toJSON();
-        res.send(jsonData);
+        // var jsonData = snapshot.val();
+        // console.log(snapshot.val());
+        // res.send(jsonData);
+        snapshot.forEach(function(childSnapshot){
+           console.log(childSnapshot.val());
+           leader.push(childSnapshot.val());
+        });
+        res.send(leader);
     });
 });
 app.listen(3000)
