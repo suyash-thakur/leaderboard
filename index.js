@@ -63,6 +63,7 @@ app.post('/showscores', (req, res) => {
            leader = [...leader, {"sap": childSnapshot.key, "val": childSnapshot.val() }];
         });
         console.log(leader);
+        leader.reverse();
         res.send(leader);
     });
 });
