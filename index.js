@@ -47,6 +47,7 @@ app.get('/count', function (req, res) {
            snapshot.ref.child(req.body.sap).update({
                points: user.points
            });
+          
           }
           else {
               var refCode = req.body.sap + '#' + makeid(5);
@@ -57,8 +58,23 @@ app.get('/count', function (req, res) {
                   points: 10,
                   refCode: refCode
               })
+
+              db.ref('student').orderByChild('refCode').equalTo(req.body.referral).once('value').then(snapshot => {
+                var key = req.body.referral;
+                var sapKey = key.split("#");
+                const user = snapshot.child(sapKey[0]).val();
+                var userPoints = user.points;
+                userPoints = userPoints + 5;
+                snapshot.ref.child(sapKey[0]).update({
+                 points: userPoints
+                });
+                console.log(user);
+            });
+            
           }
     })
+
+   
      res.send('Your referal code is' + '' + referral);
  });
  
