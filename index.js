@@ -54,8 +54,24 @@ app.post("/", (req, res) => {
       }
     })
     .then(() => {
+      db.ref("student")
+        .orderByChild("refCode")
+        .equalTo(req.body.referral)
+        .once("value")
+        .then(snapshot => {
+          var key = req.body.referral;
+          var sapKey = key.split("#");
+          const user = snapshot.child(sapKey[0]).val();
+          var userPoints = user.points;
+          userPoints = userPoints + 5;
+          snapshot.ref.child(sapKey[0]).update({
+            points: userPoints
+          });
+        });
+    })
+    .then(() => {
       res.send({ refCode });
-    });
+    })
 });
 
 app.get("/showscores", (req, res) => {
