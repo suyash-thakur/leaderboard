@@ -61,12 +61,19 @@ app.post("/", (req, res) => {
         .then(snapshot => {
           var key = req.body.referral;
           var sapKey = key.split("#");
-          const user = snapshot.child(sapKey[0]).val();
-          var userPoints = user.points;
-          userPoints = userPoints + 5;
-          snapshot.ref.child(sapKey[0]).update({
-            points: userPoints
-          });
+
+          if (req.body.sap === sapKey[0]) {
+            console.log('ref code exist');
+          }
+          else{
+            const user = snapshot.child(sapKey[0]).val();
+            var userPoints = user.points;
+            userPoints = userPoints + 5;
+            snapshot.ref.child(sapKey[0]).update({
+              points: userPoints
+            });
+          }
+        
         });
     })
     .then(() => {
