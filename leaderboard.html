@@ -42,19 +42,21 @@
             return '<div class="datarow">\n' + makeSpan(rank) + makeSpan(obj.val.name) + makeSpan(obj.sap) + makeSpan(obj.val.points) + '</div>';
         }
         
-        function putElems(count = 10) {
+        function putElems(count = 10, init=0) {
             getScores(count).then((data) => {
                 var elem = document.getElementById('leaderboardContainer');
-                for(var i=0;i<count;++i) {
+                for(var i=init;i<count;++i) {
                     elem.innerHTML += makeDataRow(i+1, data[i]);
                 }
             }).catch((err) => {
                 console.log(err);
             });
+            return init + count;
         }
 
-        const count = 5;
-        putElems(count);
+        const count = 10;
+        var doneTill = 0;
+        doneTill = putElems(count, doneTill);
   </script>
 </body>
 </html>
