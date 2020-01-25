@@ -29,6 +29,10 @@ app.get("/", (req, res) => {
   res.sendFile(__dirname + "/form.html");
 });
 
+app.get("/leaderboard", (req, res) => {
+  res.sendFile(__dirname + "/leaderboard.html");
+});
+
 app.get("/count", (req, res) => {
   res.sendFile(__dirname + "/count.html");
 });
@@ -84,7 +88,7 @@ app.post("/", (req, res) => {
 app.get("/showscores", (req, res) => {
   var leader = [];
   var count = 10;
-  if (Number(req.body.count) > 0) count = Number(req.body.count);
+  if (Math.round(Number(req.query.count)) > 0) count = Math.round(Number(req.query.count));
   var ref = db.ref("student");
   ref
     .orderByChild("points")

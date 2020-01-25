@@ -1,0 +1,60 @@
+<!doctype html>
+
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Leaderboard</title>
+  <link rel="stylesheet/css" href="/styles.css">
+</head>
+
+<body>
+    <section>
+        <h1>Leaderboard</h2>
+        <div id="leaderboard">
+            <div id="leaderboardContainer">
+                <div class="titlerow">
+                    <span>Rank</span>
+                    <span>Name</span>
+                    <span>SAP ID</span>
+                    <span>Points</span>
+                </div>
+            </div>
+        </div>
+    </section>
+    <script>
+        async function getScores(cnt = 10) {
+            const url = "http://localhost:3000/showscores";
+            let data = {
+                count: cnt.toString()
+            };
+            var response = await fetch(url + "?count=" + cnt.toString(), {
+                method: 'GET'
+            });
+            console.log(response);
+            return response.json();
+        }
+        
+        function makeSpan(num) {
+            return '<span> ' + num.toString() + '</span>\n';
+        }
+        
+        function makeDataRow(rank, obj) {
+            return '<div class="datarow">\n' + makeSpan(rank) + makeSpan(obj.val.name) + makeSpan(obj.sap) + makeSpan(obj.val.points) + '</div>';
+        }
+        
+        function putElems(count = 10) {
+            getScores(count).then((data) => {
+                var elem = document.getElementById('leaderboardContainer');
+                for(var i=0;i<count;++i) {
+                    elem.innerHTML += makeDataRow(i+1, data[i]);
+                }
+            }).catch((err) => {
+                console.log(err);
+            });
+        }
+
+        const count = 5;
+        putElems(count);
+  </script>
+</body>
+</html>
