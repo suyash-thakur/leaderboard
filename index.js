@@ -2,6 +2,9 @@ const express = require("express");
 var bodyParser = require("body-parser");
 
 const app = express();
+
+app.use('/static', express.static('static'));
+
 var admin = require("firebase-admin");
 
 var serviceAccount = require("./acm-leader-board-firebase-adminsdk-rstaw-1ba74e98a7.json");

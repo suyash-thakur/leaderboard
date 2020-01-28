@@ -3,24 +3,43 @@
 <html lang="en">
 <head>
   <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Leaderboard</title>
-  <link rel="stylesheet/css" href="/styles.css">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+  <link href="https://fonts.googleapis.com/css?family=Galada|Ubuntu:400,500,700" rel="stylesheet">
+  <link rel="stylesheet" href="/static/css/style.css">
 </head>
 
 <body>
+    <main>
+    <header></header>
     <section>
         <h1>Leaderboard</h2>
         <div id="leaderboard">
-            <div id="leaderboardContainer">
-                <div class="titlerow">
-                    <span>Rank</span>
-                    <span>Name</span>
-                    <span>SAP ID</span>
-                    <span>Points</span>
-                </div>
-            </div>
+            <table id="leaderboardContainer">
+                <thead class="table_header">
+                    <tr class="titlerow">
+                        <th class="rank_title">Rank</th>
+                        <th class="name_title">Name</th>
+                        <th class="sapid_title">SAP ID</th>
+                        <th class="points_title">Points</th>
+                    </tr>
+                </thead>
+                <tbody id="table_content" class="table_body">
+                    <!--
+                    <tr class="iota">
+                        <td class="rank_iota">1</td>
+                        <td class="name_iota">Arunachalaeshwaran V R</td>
+                        <td class="sapid_iota">500065738</td>
+                        <td class="points_iota">1000</td>
+                    </tr>   
+                    -->
+                </tbody>
+            </table>
         </div>
     </section>
+    </main>
     <script>
         async function getScores(cnt = 10) {
             const url = "http://localhost:3000/showscores";
@@ -34,7 +53,7 @@
             return response.json();
         }
         
-        function makeSpan(num) {
+        /*function makeSpan(num) {
             return '<span> ' + num.toString() + '</span>\n';
         }
         
@@ -52,11 +71,33 @@
                 console.log(err);
             });
             return init + count;
+        }*/
+        
+        function makeTd(data, col) {
+            return '<td class="' + col + '_iota">' + data.toString() + '</td>';
         }
+        
+        function makeTableRow(rank, obj) {
+            return '<tr class="iota">\n' + makeTd(rank, 'rank') + makeTd(obj.val.name, 'name') + makeTd(obj.sap, 'sapid') + makeTd(obj.val.points, 'points') + '</tr>';
+        }
+        
+        function putRows(count = 10) {
+            getScores(count).then((data) => {
+                var elem = document.getElementById('table_content');
+                for(var i=0;i<count;++i) {
+                    elem.innerHTML += makeTableRow(i+1, data[i]);
+                }
+            }).catch((err) => {
+                console.log(err);
+                return false;
+            });
+            return true;
+        }
+        
 
         const count = 10;
-        var doneTill = 0;
-        doneTill = putElems(count, doneTill);
+        if(!putRows(count))
+            console.log('Can\'t make leaderboard');
   </script>
 </body>
 </html>
