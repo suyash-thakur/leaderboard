@@ -8,6 +8,7 @@
   text-decoration: none;
   outline: none;
   -webkit-border-radius: 0;
+  x-overflow: hidden;
 }
 
 body,
@@ -20,21 +21,22 @@ html {
 
 
 #leaderboardContainer {
-  max-width: 800px;
+  max-width: 20vw;
   padding:5px;
   width: 100%;
-  margin: 50px auto;
+  margin: auto auto;
   border-collapse: collapse;
-  box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
+  //box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
   position: relative;
-  top: -180px;
+  border-spacing: 0;
+  //top: -180px;
 }
 
 .titlerow th {
   color:#fff;
   background: #1b1e24;
   border-bottom: 4px solid #9ea7af;
-  font-size:23px;
+  font-size:2rem;
   font-weight: 100;
   padding: 24px;
   text-shadow: 0 1px 1px rgba(0, 0, 0, 0.1);
